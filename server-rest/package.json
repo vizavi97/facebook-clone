@@ -1,0 +1,56 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server-side for facebook-clone",
+  "main": "server.ts",
+  "scripts": {
+    "watch": "tsc -w",
+    "dev": "nodemon dist/server.js",
+    "start": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+    "migration:create": "mikro-orm migration:create"
+  },
+  "keywords": [
+    "node.js",
+    "typescript",
+    "mikro-orm",
+    "express",
+    "rest",
+    "postgresql"
+  ],
+  "author": "Tim Fayziev <vizavi97@yahoo.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.8",
+    "@types/express-session": "^1.17.0",
+    "@types/node": "^14.10.3",
+    "nodemon": "^2.0.4",
+    "typescript": "^4.0.2"
+  },
+  "dependencies": {
+    "@mikro-orm/cli": "^4.0.3",
+    "@mikro-orm/core": "^4.0.3",
+    "@mikro-orm/migrations": "^4.0.3",
+    "@mikro-orm/postgresql": "^4.0.3",
+    "@types/cors": "^2.8.7",
+    "@types/express-promise-router": "^3.0.0",
+    "@types/helmet": "^0.0.48",
+    "@types/jsonwebtoken": "^8.5.0",
+    "argon2": "^0.27.0",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-promise-router": "^4.0.1",
+    "express-session": "^1.17.1",
+    "helmet": "^4.1.1",
+    "jsonwebtoken": "^8.5.1",
+    "ts-node": "^9.0.0"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/config/mikro-orm.config.ts",
+      "./dist/config/mikro-orm.config.js"
+    ]
+  }
+}
