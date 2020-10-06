@@ -1,4 +1,4 @@
-import {USER_LOGIN, USER_REGISTER} from "../types/user";
+import {USER_LOGIN, USER_REGISTER, VERIFY_TOKEN} from "../types/user";
 import axios from 'axios'
 import {BACKEND_URL} from "../../config/config";
 
@@ -7,7 +7,6 @@ export function login(user: any) {
     await axios.post(BACKEND_URL + "user/login", user)
       .then(resp => {
         localStorage.setItem("token", resp.data.token)
-        axios.defaults.headers.common['x-access-token'] = resp.data.token
         dispatch({
           type: USER_LOGIN,
           payload: {
@@ -31,7 +30,6 @@ export function login(user: any) {
       })
   }
 }
-
 export function register(user: any) {
   return async (dispatch: any) => {
     await axios.post(BACKEND_URL + "user/register", user)
@@ -53,5 +51,32 @@ export function register(user: any) {
           }
         })
       )
+  }
+}
+export function me(token:string) {
+  return async (dispatch: any) => {
+    await  axios.post(BACKEND_URL + 'user/verify', {token})
+      .then(resp => {
+        localStorage.setItem('token', resp.data.token)
+        dispatch({
+          type: VERIFY_TOKEN,
+          payload: {
+            user: resp.data.user,
+            token: resp.data.token,
+            isAuthorization: true,
+            errors: null
+          }
+        })
+      })
+      .catch(error => {
+        dispatch({
+          type: VERIFY_TOKEN,
+          payload: {
+            user: null,
+            isAuthorization: false,
+            errors: error
+          }
+        })
+      })
   }
 }

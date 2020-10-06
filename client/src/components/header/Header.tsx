@@ -2,7 +2,7 @@ import React from 'react'
 import {Flex} from "@chakra-ui/core";
 import {Search} from "./Search";
 import {NavBar} from "./NavBar";
-import {HeaderProfile} from "./HeaderProfile";
+import HeaderProfile from "./HeaderProfile";
 interface HeaderProps {}
 
 

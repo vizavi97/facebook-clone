@@ -8,6 +8,7 @@ import React from "react";
 import {Auth} from "../pages/auth/Auth";
 import {MainLayout} from "../components/layouts/MainLayout";
 import {AuthLayout} from "../components/layouts/AuthLayout";
+import {Test} from "../pages/test";
 
 
 export const useRoutes = (isAuthenticated: boolean) => {
@@ -29,6 +30,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
     <AuthLayout>
       <Switch>
         <Route exact path='/' component={Auth}/>
+        <Route exact path='/test' component={Test} />
         <Redirect to="/"/>
       </Switch>
     </AuthLayout>

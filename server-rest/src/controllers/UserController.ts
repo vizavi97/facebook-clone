@@ -1,10 +1,9 @@
 import {Entity} from "@mikro-orm/core";
-import {Request, Response} from "express";
-import {generateToken, registerTypes, validateRegister} from "../utils/functions";
+import {Request, response, Response} from "express";
+import {generateAccessToken, registerTypes, validateRegister, verifyToken} from "../utils/functions";
 import argon from 'argon2'
 import {User} from "../entities/User";
 import {ORM} from "../server";
-import {Post} from "../entities/Post";
 
 @Entity()
 export class UserController {
@@ -40,6 +39,7 @@ export class UserController {
       }
     }
   }
+
   async login(req:Request,res:Response): Promise<any> {
     const params = req.body
     const errors = validateRegister(params)
@@ -65,11 +65,25 @@ export class UserController {
           },
         ]})
     }
-    const token = generateToken(user)
-    return res.status(200).json({user: {...user},token})
+    const token = generateAccessToken(user)
+    return res.status(200).json( {user : {...user},token})
   }
-  async test(_req: Request, res: Response) {
-    const post = await ORM.em.find(Post, {})
-    return res.json(post)
+
+  async verify(req:Request,res:Response):Promise<any> {
+    const token = req.body.token
+    if(!token) {
+      res.status(403).send({message: "Token is expired"})
+    }
+    try {
+      const {id}:any = verifyToken(token)
+      const user = await ORM.em.findOne(User,{id: id})
+      const newToken = generateAccessToken(user)
+      console.log('token is normal!!!');
+      return res.status(200).json({user: {...user},token: newToken})
+    }
+    catch (e) {
+      console.log(e)
+      res.status(401).send({message: "Your token is expired"})
+    }
   }
 }
